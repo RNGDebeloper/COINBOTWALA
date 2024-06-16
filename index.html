@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coin Clicker</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+    }
+    .container {
+      text-align: center;
+    }
+    .coin {
+      cursor: pointer;
+      width: 150px;
+    }
+    .counter {
+      margin-top: 20px;
+      font-size: 2em;
+      font-weight: bold;
+    }
+    .buttons {
+      margin-top: 30px;
+    }
+    .button {
+      margin: 5px;
+      padding: 10px 20px;
+      font-size: 1em;
+      cursor: pointer;
+      border: none;
+      background-color: #007bff;
+      color: #fff;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img src="https://i.imgur.com/oY5r6PS.png" alt="Coin" class="coin" id="coin">
+    <div class="counter" id="counter">Coins: 0</div>
+    <div class="buttons">
+      <button class="button" id="earnMore">Earn More</button>
+      <button class="button" id="referralCount">Referral Count</button>
+      <button class="button" id="booster">Booster</button>
+    </div>
+  </div>
+  <script>
+    let coinCount = 0;
+    const coin = document.getElementById('coin');
+    const counter = document.getElementById('counter');
+    const userId = 'USER_ID'; // Replace with actual user ID from Telegram
+
+    // Function to update coin count in the server
+    const updateCoinCount = (coins) => {
+      fetch('/updateCoins', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ userId, coins })
+      });
+    };
+
+    coin.addEventListener('click', () => {
+      coinCount++;
+      counter.innerText = `Coins: ${coinCount}`;
+      updateCoinCount(coinCount);
+    });
+
+    document.getElementById('earnMore').addEventListener('click', () => {
+      alert('Feature coming soon!');
+    });
+
+    document.getElementById('referralCount').addEventListener('click', () => {
+      alert('Feature coming soon!');
+    });
+
+    document.getElementById('booster').addEventListener('click', () => {
+      alert('Feature coming soon!');
+    });
+
+    // Initial load from server
+    fetch(`/getCoins?userId=${userId}`)
+      .then(response => response.json())
+      .then(data => {
+        coinCount = data.coins || 0;
+        counter.innerText = `Coins: ${coinCount}`;
+      });
+  </script>
+</body>
+</html>
